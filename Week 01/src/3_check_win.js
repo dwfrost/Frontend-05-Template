@@ -1,9 +1,10 @@
 const rootDom = document.querySelector('#root')
 let toggleValue = 1
 
+// 假设0表示空，1表示x，2表示o
 const pattern = [
-  [2, 0, 0],
-  [0, 1, 0],
+  [1, 0, 0],
+  [0, 2, 0],
   [0, 0, 0],
 ]
 draw()
@@ -35,21 +36,72 @@ function draw() {
 // 每次点击后，重新绘制
 function reDraw(i, j) {
   pattern[i][j] = toggleValue
+  // 判定胜负
+  if (check(j,i)) {
+    alert('you win')
+  }
   // 下次切换
   toggleValue = 3 - toggleValue
   draw()
 
-  // 判定胜负
-  if (check(i, j)) {
-    alert('you win')
-  }
 }
 
 // 判定胜负逻辑
-function check() {
-  // 3横
+// x-横坐标 y-纵坐标
+function check(x,y) {
+  // toggleValue
+  console.log(toggleValue)
 
-  // 3竖
+  // 横向3子相同 只需要判定当前纵坐标的一横
+{
+  let win = true
+  for(let i=0;i<pattern.length;i++){
+    if(pattern[y][i]!==toggleValue){
+      win = false
+    }
+  }
+  if(win){
+    return win
+  }
+}
 
-  // 斜
+  // 纵向3子相同
+  {
+  let win = true
+  for(let i=0;i<pattern.length;i++){
+      if(pattern[i][x]!==toggleValue){
+        win = false
+      }
+    }
+    if(win){
+      return win
+    }
+  }
+
+  // 左斜3子相同
+  {
+  let win = true
+  for(let i=0;i<pattern.length;i++){
+      if(pattern[i][2-i]!==toggleValue){
+        win = false
+      }
+    }
+    if(win){
+      return win
+    }
+  }
+  // 右斜3子相同
+  {
+  let win = true
+  for(let i=0;i<pattern.length;i++){
+      if(pattern[i][i]!==toggleValue){
+        win = false
+      }
+    }
+    if(win){
+      return win
+    }
+  }
+  return false
+
 }
