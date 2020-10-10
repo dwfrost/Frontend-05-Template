@@ -5,11 +5,15 @@ let toggleValue = 1
 
 // 假设0表示空，1表示x，2表示o
 const pattern = [
-  [1, 0, 0],
-  [0, 2, 0],
+  [0, 0, 2],
+  [0, 1, 0],
   [0, 0, 0],
 ]
 draw()
+
+
+const checkRes = checkWhoWillWin(pattern, toggleValue)
+console.log('checkRes',checkRes)
 
 // 绘制棋盘
 function draw() {
@@ -38,6 +42,7 @@ function draw() {
       rootDom.appendChild(innerBox)
     }
   }
+
 }
 
 // 每次点击后，重新绘制
@@ -133,11 +138,70 @@ function willWinCheck(pattern, toggleValue) {
 
       // 胜负判定
       if (check(j, i, temp)) {
-        return true
+        return [j, i]
       }
     }
   }
-  return false
+  return null
+}
+
+/**
+ * 1.如果即将胜利，直接返回
+ * 2.定义输赢状态 -2初始值 -1输 0和棋 1赢
+ * 3.递归调用willWinCheck，判断下一步是否胜利，并返回最终结果
+ */
+function checkWhoWillWin(pattern, toggleValue) {
+  // let willWinPoint = willWinCheck(pattern, toggleValue)
+  // // console.log('willWinPoint',willWinPoint)
+  // if (willWinPoint) {
+  //   return {
+  //     point: willWinPoint,
+  //     result: 1,
+  //   }
+  // }
+  let p 
+  if(p=willWinCheck(pattern, toggleValue)){
+    return {
+      point:p,
+      result:1
+    }
+  }
+
+  let result = -2
+  let point = null
+
+  // 遍历逻辑跟 willWinCheck 类似
+  for (let i = 0; i < pattern.length; i++) {
+    const innerArr = pattern[i]
+    for (let j = 0; j < innerArr.length; j++) {
+      // 只对空节点判断
+      if (innerArr[j]) continue
+
+      // 每次循环前，恢复棋盘状态
+      const temp = deepClone(pattern)
+      // 假设当前空节点落子
+      temp[i][j] = toggleValue
+
+      // 如果不递归，只是对下一步做预测。
+      // 这里需要预测后面的所有步数，所以使用递归计算
+
+      // 递归中，棋盘状态（坐标）在变，落子也在切换X/O
+      // tempResult-下一步的结果
+      let tempResult = checkWhoWillWin(temp, 3 - toggleValue).result
+
+      // 核心判断
+      // 找对方最差的坐标
+      if (-tempResult > result) {
+        result = -tempResult
+        point = [j, i]
+      }
+    }
+  }
+
+  return {
+    point,
+    result: point ? result : 0,
+  }
 }
 
 function deepClone(obj) {
