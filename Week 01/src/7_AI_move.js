@@ -9,12 +9,12 @@ const rootDom = document.querySelector('#root')
 // const pattern = [0, 0, 2, 0, 1, 0, 0, 0, 0]
 
 // 空棋盘 我方先走
-const pattern = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-let toggleValue = 1
+// const pattern = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+// let toggleValue = 1
 
 // AI先走
-// const pattern = [0, 0, 0, 0, 1, 0, 0, 0, 0]
-// let toggleValue = 2
+const pattern = [0, 0, 0, 0, 1, 0, 0, 0, 0]
+let toggleValue = 2
 
 draw()
 
@@ -25,9 +25,7 @@ function draw() {
 
   // 遍历，并渲染
   for (let i = 0; i < DIMENSION; i++) {
-    // const innerArr = pattern[i]
     for (let j = 0; j < DIMENSION; j++) {
-      // const innerValue = innerArr[j]
       const innerValue = pattern[3 * i + j]
       const innerText = innerValue === 2 ? '⭕' : innerValue === 1 ? '❌' : ''
 
@@ -55,7 +53,6 @@ function draw() {
 
 // 每次点击后，重新绘制
 function reDraw(i, j) {
-  // pattern[i][j] = toggleValue
   pattern[3 * i + j] = toggleValue
   // 判定胜负
   if (check(j, i, pattern, toggleValue)) {
@@ -223,9 +220,9 @@ function bestChoice(pattern, toggleValue) {
       }
 
       // 胜负剪枝 当判断要赢了之后，不再计算后续步骤
-      // if (result === 1) {
-      //   break outer
-      // }
+      if (result === 1) {
+        break outer
+      }
     }
   }
 
