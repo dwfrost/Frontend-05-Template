@@ -1,32 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
 
-  <style>
-    #root{
-      width: 150px;
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .cell{
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      background-color: green;
-      border: 1px solid #fff;
-      box-sizing: border-box;
+    <style>
+      #root {
+        width: 150px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .cell {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        background-color: green;
+        border: 1px solid #fff;
+        box-sizing: border-box;
 
-      text-align: center;
-      line-height: 50px;
-    }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-</body>
+        text-align: center;
+        line-height: 50px;
+      }
+
+      #light {
+        width: 200px;
+        display: flex;
+      }
+      .circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #ccc;
+        margin-right: 10px;
+      }
+      .red {
+        background-color: red;
+      }
+      .yellow {
+        background-color: yellow;
+      }
+      .green {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <p>三子棋</p>
+    <div id="root"></div>
+
+    <!-- 红绿灯 -->
+    <p>红绿灯</p>
+    <div id="light">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div>
+  </body>
 </html>
 
 <!-- <script src="./1_base.js"></script> -->
@@ -36,3 +66,5 @@
 <!-- <script src="./5_will_win_complete.js"></script> -->
 <!-- <script src="./6_one_array.js"></script> -->
 <script src="./7_AI_move.js"></script>
+
+<script src="./8_light.js"></script>
