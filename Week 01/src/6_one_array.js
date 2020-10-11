@@ -1,14 +1,18 @@
 /* 初步AI，对于即将胜利的一方进行提示 */
-
+// 使用一维数组
+// 方便克隆
+const DIMENSION = 3
 const rootDom = document.querySelector('#root')
 let toggleValue = 1
 
 // 假设0表示空，1表示x，2表示o
-const pattern = [
-  [0, 2, 0],
-  [0, 1, 0],
-  [0, 0, 0],
-]
+// const pattern = [0, 2, 0, 0, 1, 0, 0, 0, 0]
+const pattern = [0, 0, 2, 0, 1, 0, 0, 0, 0]
+// const pattern = [
+//   [0, 2, 0],
+//   [0, 1, 0],
+//   [0, 0, 0],
+// ]
 // const pattern = [
 //   [0, 0, 2],
 //   [0, 1, 0],
@@ -25,10 +29,11 @@ function draw() {
   rootDom.innerHTML = ''
 
   // 遍历，并渲染
-  for (let i = 0; i < pattern.length; i++) {
-    const innerArr = pattern[i]
-    for (let j = 0; j < innerArr.length; j++) {
-      const innerValue = innerArr[j]
+  for (let i = 0; i < DIMENSION; i++) {
+    // const innerArr = pattern[i]
+    for (let j = 0; j < DIMENSION; j++) {
+      // const innerValue = innerArr[j]
+      const innerValue = pattern[3 * i + j]
       const innerText = innerValue === 2 ? '⭕' : innerValue === 1 ? '❌' : ''
 
       const innerBox = document.createElement('div')
@@ -50,7 +55,8 @@ function draw() {
 
 // 每次点击后，重新绘制
 function reDraw(i, j) {
-  pattern[i][j] = toggleValue
+  // pattern[i][j] = toggleValue
+  pattern[3 * i + j] = toggleValue
   // 判定胜负
   if (check(j, i, pattern, toggleValue)) {
     // alert('you win')
@@ -68,8 +74,8 @@ function check(x, y, pattern, toggleValue) {
   // 横向3子相同 只需要判定当前纵坐标的一横
   {
     let win = true
-    for (let i = 0; i < pattern.length; i++) {
-      if (pattern[y][i] !== toggleValue) {
+    for (let i = 0; i < DIMENSION; i++) {
+      if (pattern[3 * y + i] !== toggleValue) {
         win = false
       }
     }
@@ -81,8 +87,8 @@ function check(x, y, pattern, toggleValue) {
   // 纵向3子相同
   {
     let win = true
-    for (let i = 0; i < pattern.length; i++) {
-      if (pattern[i][x] !== toggleValue) {
+    for (let i = 0; i < DIMENSION; i++) {
+      if (pattern[3 * i + x] !== toggleValue) {
         win = false
       }
     }
@@ -94,8 +100,8 @@ function check(x, y, pattern, toggleValue) {
   // 左斜3子相同
   {
     let win = true
-    for (let i = 0; i < pattern.length; i++) {
-      if (pattern[i][2 - i] !== toggleValue) {
+    for (let i = 0; i < DIMENSION; i++) {
+      if (pattern[2 * i + 3] !== toggleValue) {
         win = false
       }
     }
@@ -106,8 +112,8 @@ function check(x, y, pattern, toggleValue) {
   // 右斜3子相同
   {
     let win = true
-    for (let i = 0; i < pattern.length; i++) {
-      if (pattern[i][i] !== toggleValue) {
+    for (let i = 0; i < DIMENSION; i++) {
+      if (pattern[4 * i + 1] !== toggleValue) {
         win = false
       }
     }
@@ -126,16 +132,17 @@ function check(x, y, pattern, toggleValue) {
 function willWinCheck(pattern, toggleValue) {
   // console.log( temp, pattern, toggleValue)
 
-  for (let i = 0; i < pattern.length; i++) {
-    const innerArr = pattern[i]
-    for (let j = 0; j < innerArr.length; j++) {
+  for (let i = 0; i < DIMENSION; i++) {
+    // const innerArr = pattern[i]
+    for (let j = 0; j < DIMENSION; j++) {
       // 只对空节点判断
-      if (innerArr[j]) continue
+      if (pattern[3 * i + j]) continue
 
       // 每次循环前，恢复棋盘状态
-      const temp = deepClone(pattern)
+      const temp = tempClone(pattern)
       // 假设当前空节点落子
-      temp[i][j] = toggleValue
+      // temp[i][j] = toggleValue
+      temp[3 * i + j] = toggleValue
       // console.log(temp, pattern)
 
       // 胜负判定
@@ -155,7 +162,7 @@ function willWinCheck(pattern, toggleValue) {
 function bestChoice(pattern, toggleValue) {
   let willWinPoint = willWinCheck(pattern, toggleValue)
   // console.log('willWinPoint',willWinPoint)
-  // 递归结束条件，赢
+  // 递归结束条件
   if (willWinPoint) {
     return {
       point: willWinPoint,
@@ -167,16 +174,16 @@ function bestChoice(pattern, toggleValue) {
   let point = null
 
   // 遍历逻辑跟 willWinCheck 类似
-  for (let i = 0; i < pattern.length; i++) {
-    const innerArr = pattern[i]
-    for (let j = 0; j < innerArr.length; j++) {
+  for (let i = 0; i < DIMENSION; i++) {
+    // const innerArr = pattern[i]
+    for (let j = 0; j < DIMENSION; j++) {
       // 只对空节点判断
-      if (innerArr[j]) continue
+      if (pattern[3 * i + j]) continue
 
       // 每次循环前，恢复棋盘状态
-      const temp = deepClone(pattern)
+      const temp = tempClone(pattern)
       // 假设当前空节点落子
-      temp[i][j] = toggleValue
+      temp[3 * i + j] = toggleValue
 
       // 如果不递归，只是对下一步做预测。
       // 这里需要预测后面的所有步数，所以使用递归计算。并递归出对方的最优策略，作为我方最优策略
@@ -206,4 +213,8 @@ function bestChoice(pattern, toggleValue) {
 
 function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj))
+}
+
+function tempClone(obj) {
+  return Object.create(obj)
 }
