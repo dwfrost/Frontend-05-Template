@@ -3,22 +3,19 @@
 // 方便克隆
 const DIMENSION = 3
 const rootDom = document.querySelector('#root')
-let toggleValue = 1
 
 // 假设0表示空，1表示x，2表示o
 // const pattern = [0, 2, 0, 0, 1, 0, 0, 0, 0]
 // const pattern = [0, 0, 2, 0, 1, 0, 0, 0, 0]
+
+// 空棋盘 我方先走
 const pattern = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-// const pattern = [
-//   [0, 2, 0],
-//   [0, 1, 0],
-//   [0, 0, 0],
-// ]
-// const pattern = [
-//   [0, 0, 2],
-//   [0, 1, 0],
-//   [0, 0, 0],
-// ]
+let toggleValue = 1
+
+// AI先走
+// const pattern = [0, 0, 0, 0, 1, 0, 0, 0, 0]
+// let toggleValue = 2
+
 draw()
 
 // 绘制棋盘
@@ -62,9 +59,28 @@ function reDraw(i, j) {
   pattern[3 * i + j] = toggleValue
   // 判定胜负
   if (check(j, i, pattern, toggleValue)) {
-    // alert('you win')
     const innerText = toggleValue === 2 ? '⭕' : toggleValue === 1 ? '❌' : ''
     alert(innerText + 'win')
+  }
+  // 下次切换
+  toggleValue = 3 - toggleValue
+  draw()
+
+  // 我方下完之后，AI下
+  AIMove()
+}
+
+function AIMove() {
+  let choice = bestChoice(pattern, 3 - toggleValue)
+  // 选择最优策略
+  if (choice.point) {
+    const [aiJ, aiI] = choice.point
+    pattern[aiI * 3 + aiJ] = toggleValue
+    // 判定胜负
+    if (check(aiJ, aiI, pattern, toggleValue)) {
+      const innerText = toggleValue === 2 ? '⭕' : toggleValue === 1 ? '❌' : ''
+      alert(innerText + 'win')
+    }
   }
   // 下次切换
   toggleValue = 3 - toggleValue
@@ -205,7 +221,9 @@ function bestChoice(pattern, toggleValue) {
         result = -tempResult
         point = [j, i]
       }
-      // if(result===1){
+
+      // 胜负剪枝 当判断要赢了之后，不再计算后续步骤
+      // if (result === 1) {
       //   break outer
       // }
     }
