@@ -129,3 +129,32 @@ function sleep(time) {
     }, time)
   })
 }
+
+class Sorted {
+  constructor(data, compare) {
+    this.data = data.slice()
+    this.compare = compare || ((a, b) => a - b)
+  }
+
+  take() {
+    if (!this.data.length) return
+
+    let min = this.data[0]
+    let minIndex = 0
+
+    for (let i = 1, len = this.data.length; i < len; i++) {
+      if (this.compare(this.data[i], min) < 0) {
+        min = this.data[i]
+        minIndex = i
+      }
+    }
+
+    // 找到最小的后，抛弃
+    this.data[minIndex] = this.data[this.data.length - 1]
+    this.data.pop()
+    return min
+  }
+  give(v) {
+    this.data.push(v)
+  }
+}
