@@ -62,5 +62,24 @@ button.addEventListener('click', () => {
 function path(map, start, end) {
   let queue = [start]
 
-  function insert(x, y) {}
+  while (queue.length > 0) {
+    const [x, y] = queue.shift()
+    console.log(x, y)
+    if (x === end[0] && y === end[1]) {
+      console.log('get it')
+      return
+    }
+    insert(x, y + 1)
+    insert(x + 1, y)
+    insert(x, y - 1)
+    insert(x - 1, y)
+  }
+
+  function insert(x, y) {
+    if (x < 0 || x > 100 || y < 0 || y > 100) return
+    if (map[100 * y + x] > 0) return
+
+    map[100 * y + x] = 2 // 记录插入过的坐标
+    queue.push([x, y])
+  }
 }
