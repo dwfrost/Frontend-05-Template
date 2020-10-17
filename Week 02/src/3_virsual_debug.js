@@ -61,13 +61,19 @@ save.addEventListener('click', () => {
   localStorage.setItem('map_status', JSON.stringify(mapList))
 })
 
+// 寻路
+const run = document.querySelector('.run')
+run.addEventListener('click', () => {
+  path(mapList, [0, 0], [20, 25])
+})
+
 /**
  * 寻路逻辑
  * @param {*} map 当前地图
  * @param {*} start 起点
  * @param {*} end 终点
  */
-function path(map, start, end) {
+async function path(map, start, end) {
   let queue = [start]
 
   while (queue.length > 0) {
@@ -77,17 +83,27 @@ function path(map, start, end) {
       console.log('get it')
       return
     }
-    insert(x, y + 1)
-    insert(x + 1, y)
-    insert(x, y - 1)
-    insert(x - 1, y)
+    await insert(x, y + 1)
+    await insert(x + 1, y)
+    await insert(x, y - 1)
+    await insert(x - 1, y)
   }
 
-  function insert(x, y) {
+  async function insert(x, y) {
     if (x < 0 || x > 100 || y < 0 || y > 100) return
     if (map[100 * y + x] > 0) return
 
+    await sleep(10)
+    // console.log(root.childNodes[100 * y + x])
+    root.childNodes[100 * y + x].style.background = 'lightgreen'
     map[100 * y + x] = 2 // 记录插入过的坐标
     queue.push([x, y])
   }
+}
+function sleep(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve()
+    }, time)
+  })
 }
