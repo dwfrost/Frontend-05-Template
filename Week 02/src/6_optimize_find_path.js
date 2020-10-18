@@ -71,9 +71,6 @@ run.addEventListener('click', () => {
  */
 async function findPath(map, start, end) {
   let table = Object.create(map) // 虚拟map
-  // const data = [start]
-  // const compare = (a, b) => distance(a) - distance(b)
-  // let queue = new Sorted(data, compare)
   let queue = new Sorted([start], (a, b) => distance(a) - distance(b))
 
   async function insert(x, y, pre) {
@@ -82,9 +79,7 @@ async function findPath(map, start, end) {
     if (table[100 * y + x]) return
 
     await sleep(10)
-    // console.log(root.childNodes[100 * y + x])
     root.children[100 * y + x].style.background = 'lightgreen'
-    // map[100 * y + x] = 2 // 记录插入过的坐标
     table[100 * y + x] = pre // 每次insert时，table存的前一个节点
     queue.give([x, y])
   }
