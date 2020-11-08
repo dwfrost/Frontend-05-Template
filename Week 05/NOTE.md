@@ -27,3 +27,13 @@ Proxy 实例化过程中，会挂载一些钩子，可以用来监听属性的�
 
 - setter 触发时处理响应
 - 所有的响应可以存储在一个数组中，触发 setter 后遍历调用所有的 callback，这里 callback 就可以处理比如事件挂载，dom 更新等操作。但遍历会有性能问题，因为不需要
+
+3. Map api 练习
+
+```js
+const map = new Map()
+
+map.has() // 是否有某个属性
+map.get() // 获取某个属性
+map.get().get() // 获取二级属性
+```
