@@ -2,9 +2,13 @@
 function fn2() {
   console.log('fn2=================')
   let object = {
-    a: 1,
+    // a: 1,
+    a: { c: 1 },
     b: 2,
   }
+
+  // 依赖缓存
+  let reactivities = new Map()
 
   let usedReactivities = []
 
@@ -14,7 +18,6 @@ function fn2() {
 
   effect(() => {
     console.log('effect-a', po.a)
-    // console.log('effect-b', po.b)
   })
 
   // 事件监听管理中心
@@ -42,7 +45,10 @@ function fn2() {
   }
 
   function reactive(object) {
-    return new Proxy(object, {
+    if (reactivities.has(object)) {
+      return reactivities.get(object)
+    }
+    let proxy = new Proxy(object, {
       set(obj, prop, val) {
         // console.log('set', obj, prop, val)
         obj[prop] = val
@@ -69,15 +75,22 @@ function fn2() {
         // 访问过的存起来
         usedReactivities.push([obj, prop])
 
+        // 当prop对应的值是一个对象时，需要继续代理
+        if (typeof obj[prop] === 'object') {
+          return reactive(obj[prop])
+        }
+
         return obj[prop]
       },
     })
+
+    reactivities.set(object, proxy)
+
+    return proxy
   }
 
-  po.a = 3 // 已收集依赖
-
-  // 如果属性值是一个对象呢？
-  // po.a.c = 10
+  // po.a = 3 // 已收集依赖
+  po.a = { d: 5 } // 已收集依赖
   po.b = 4 // 未收集依赖
   // console.log('object', object)
   console.log('=================fn2')
