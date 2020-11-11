@@ -41,3 +41,31 @@ map.get().get() // 获取二级属性
 4. reactive 优化
 
 深层次的属性监听，在收集依赖时，发现属性对应的值是对象类型时，继续使用 Proxy 来收集依赖
+
+5. mvvm 模拟
+   双向绑定的原理
+
+更新数据，视图随之更新；
+更新视图，数据随之更新
+
+以 input 为例：
+
+- data -> DOM
+  修改 proxy.a，在响应式触发 getter 时，找到 input DOM，修改 value
+
+- DOM -> data
+  监听 input DOM 的 input 事件，值发生变化时，触发 proxy.a 的 setter，更新 proxy.a 的值
+
+参考 4_mvvm.js，这里封装成一个 class，调用方直接 new 即可。
+
+6. 基于 mvvm 的调色器实现
+   input DOM 更改值，触发 setter，更新 proxy，然后继续触发 r,g,b 属性的 getter，从而更新色块的背景色
+
+7. 基本拖拽
+
+- 使用`mousedown`，`mousemove`，`mouseup`来进行模拟，drag 事件不够强大
+- currentX,currentY：每次拖拽结束后的位置
+- baseX,baseY：每次拖拽前，鼠标位置与元素位置的差值。对于每次拖拽，它是一个常量，因为鼠标位置与元素左上角的距离是不变的。
+- event.clientX,event.clientY：当前鼠标点所在的位置
+
+通过改变元素的 transform 即可完成偏移

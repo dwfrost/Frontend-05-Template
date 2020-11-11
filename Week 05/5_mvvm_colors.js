@@ -15,7 +15,7 @@ class Reactive {
     const g = document.querySelector('#g')
     const b = document.querySelector('#b')
     const a = document.querySelector('#a')
-    const div = document.querySelector('div')
+    const div = document.querySelector('.color')
 
     text.addEventListener('input', (event) => {
       this.$data.text = event.target.value // DOM -> 数据
