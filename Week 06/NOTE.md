@@ -107,3 +107,126 @@ js 隐式转换（弱类型）
 子类型
 
 泛型
+
+### 编程语言的设计方式
+
+由小到大依次是
+Atom，如 Identifier,Literal 关键字 变量名 直接量
+Expression，如 Atom,Operator,Punctuator
+Statement，如 Expression,Keyword,Punctuator
+Structure，如 Function,Class,Process,Namespace
+Program，如 Program,Module,Package,Library
+
+#### 后续课程讲解思路
+
+语法 ==》 语义 ==》 运行时
+
+### JS 类型之 Number
+
+类型汇总
+Number,String,Boolean,Object,Null,Undefined,Symbol
+
+Number 定义是双精度浮点类型，包括
+Sign(1) 符号位
+Exponent(11) 指数位
+Fraction(52) 精度位
+
+精度损失
+因为浮点数不能精确表示 10 进制数字，它在真实数字上下浮动。然后在运算过程中，可能就会丢失精度。
+
+> 著名问题 0.1+0.2 != 0.3
+
+### JS 类型之 String
+
+字符串有字符（Character）组成，如 a
+码点(Code Point)是计算机的表示方法，如 97
+编码(Encoding)是字节的表示，如 01100001
+
+字符集：
+
+- ASCII 最早的一种编码，字符很少
+- Unicode,UCS
+- GB(GB2312,GBK,GB18030) 中国
+- ISO-8859 东欧国家
+- BIG5 台湾
+
+UTF8，解释为 1 个字节有 8 个比特位，表示 1 个字符
+
+字符串表示法
+`` | '' | ""
+
+### JS 类型之 Null Undefined
+
+Null 表示定义了，但无值
+Undefined 表示未定义
+
+如果要表示 `undefined`，可以写成 `void 0`
+
+### JS 类型之 Object
+
+1.基础解释
+任何一个对象是唯一的，这与它本身的状态无关。
+我们用状态来描述对象。
+状态的改变，即行为。
+
+2.组成
+对象由 3 个核心要素组成
+
+- state 有状态
+- identifier 唯一性标识
+- behavior 状态可以改变
+
+  3.类
+
+- 归类 多继承，层层提取共性 由下到上
+- 分类 单继承，基类是最上层的一类 由上到下
+
+javaScript 更接近分类思想，体现为原型思想
+
+ <!-- 小练习 -->
+
+狗咬人，怎么描述
+
+```
+ // 不推荐，因为狗本身状态没有改变
+class Dog{
+  bite(){}
+}
+
+// 推荐，狗咬人是业务逻辑，真正的逻辑是人受到了伤害，入参是伤害的类型和值
+class Human{
+  hurt(damage){}
+}
+```
+
+4.JavaScript 的对象
+state 属性
+identifier 内存地址
+behavior 方法
+
+原型链是获取对象属性的行为
+
+- 属性
+  包括 数据属性 和 访问器属性
+
+一般地，数据属性用于描述状态，访问器属性用于描述行为
+
+Data Property
+
+- [[value]]
+- writable
+- enumerable
+- configurable
+
+Accessor Property
+
+- get
+- set
+- enumerable
+- configurable
+
+对象分类
+
+- Function 对象
+- Array 对象
+- Host 对象
