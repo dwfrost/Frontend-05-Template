@@ -133,6 +133,53 @@ Symbol : new Object(Symbol('a')) Symbol('a')
 
 ### JS 语句 之 声明
 
+#### 声明分类
+
+- 函数声明
+  - function
+  - function \*
+  - async function
+  - async function \*
+- 变量声明
+- class 声明
+- lexical 声明
+  - let
+  - const
+
+#### 预处理机制
+
+在 JS 引擎解析代码之前，对代码本身做预先处理
+
+- example
+
+```js
+var a = 2
+void (function () {
+  a = 1
+  return
+  var a // 尽管有return，但声明依然提前
+})()
+console.log(a) // 2
+```
+
+#### 作用域
+
+以 var 为例，var 声明的变量仅在它当前所处的函数范围内生效，这就是一段变量作用的范围，即作用域
+
+而 const 声明的变量，就在 block（花括号）范围内有效
+
+```js
+var a = 2
+void (function(){
+  a = 1
+  return
+  {
+    const a
+  }
+})()
+console.log(a)
+```
+
 ### JS 结构化 之 宏任务、微任务
 
 ### JS 结构化 之 函数调用
