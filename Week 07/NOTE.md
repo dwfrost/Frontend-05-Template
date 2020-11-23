@@ -170,7 +170,7 @@ console.log(a) // 2
 
 ```js
 var a = 2
-void (function(){
+void (function () {
   a = 1
   return
   {
@@ -181,5 +181,12 @@ console.log(a)
 ```
 
 ### JS 结构化 之 宏任务、微任务
+
+- 宏任务
+- 微任务
+
+JS 引擎外执行的是宏任务，JS 引擎内 Promise 会产生微任务
+
+- 事件循环 1.获取代码 2.执行代码 3.等待下一次获取代码
 
 ### JS 结构化 之 函数调用
