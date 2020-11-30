@@ -67,3 +67,17 @@ while (input) {
 - 端口
 - 包
 - IP 地址
+
+#### HTTP 协议的 request
+
+```
+# request包含3部分，method 路径 协议版本
+POST / HTTP/1.1
+
+# Headers 是多行，每行用;分隔，类似k/v结构，以空白行结束
+Host:127.0.0.1
+Content-Type:application/x-www-form-urlencoded
+
+# body 格式由Content-Type决定的
+a=b&code=x%3D1
+```
