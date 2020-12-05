@@ -81,3 +81,22 @@ Content-Type:application/x-www-form-urlencoded
 # body 格式由Content-Type决定的
 a=b&code=x%3D1
 ```
+
+#### HTTP 协议的 response
+
+```
+# status line
+HTTP/1.1 200 OK
+
+# headers 同request
+Content-Type:text/html
+Date:Mon,23 Dec 2019 06:49:19 GMT
+Connection:keep-alive
+Transfer-Encoding:chunked
+
+
+# body
+26
+<html><body>Hello World</body></html>
+0
+```
