@@ -1,4 +1,5 @@
 const net = require('net')
+const parser = require('./parser.js')
 class Request {
   constructor(option) {
     // 收集必要信息
@@ -25,7 +26,7 @@ class Request {
         .map((key) => `${key}=${encodeURIComponent(this.body[key])}`)
         .join('&')
     }
-    console.log('bodyText', this.bodyText)
+    // console.log('bodyText', this.bodyText)
 
     this.headers['Content-Length'] = this.bodyText.length
   }
@@ -54,7 +55,7 @@ class Request {
       }
 
       connection.on('data', (data) => {
-        console.log('data.toString()', data.toString())
+        // console.log('data.toString()', data.toString())
         parser.receive(data.toString())
 
         if (parser.isFinished) {
@@ -156,7 +157,7 @@ class ResponseParser {
         this.current = this.WAITING_BODY
       }
     } else if (this.current === this.WAITING_BODY) {
-      console.log('body', char)
+      // console.log('body', char)
       this.bodyParser.receiveChar(char)
     }
   }
@@ -242,6 +243,7 @@ void (async function () {
   let request = new Request(option)
 
   const response = await request.send()
+  // console.log(response)
 
-  console.log(response)
+  const dom = parser.parseHTML(response.body)
 })()
