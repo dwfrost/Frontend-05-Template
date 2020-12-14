@@ -1,3 +1,5 @@
+const { time } = require('console')
+
 function layout(element) {
   if (!element.computedStyle) return
 
@@ -163,6 +165,95 @@ function layout(element) {
 
   flexLine.mainSpace = mainSpace
   console.log('items', items)
+
+  if (elementStyle.flexWrap === 'nowrap' || isAutoMainSize) {
+    flexLine.crossSpace =
+      elementStyle[crossSize] !== undefined
+        ? elementStyle[crossSize]
+        : crossSpace
+  } else {
+    flexLine.crossSpace = crossSpace
+  }
+
+  if (mainSpace < 0) {
+    // 单行的情况
+    const scale = elementStyle[mainSize] / (elementStyle[mainSize] - mainSpace)
+    const currentMain = mainBase
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      const itemStyle = getStyle(item)
+      if (itemStyle.flex) {
+        // 不参与压缩
+        itemStyle[mainSize] = 0
+      }
+      itemStyle[mainSize] = itemStyle[mainSize] * scale
+      itemStyle[mainStart] = currentMain
+      itemStyle[mainEnd] = itemStyle[mainStart] + mainSign * itemStyle[mainSize]
+      currentMain = itemStyle[mainEnd]
+    }
+  } else {
+    // 多行逻辑
+    flexLines.forEach((items) => {
+      const { mainSpace } = items
+      let flexTotal = 0
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        const itemStyle = getStyle(item)
+        if (itemStyle.flex !== null || itemStyle.flex !== void 0) {
+          flexTotal += itemStyle.flex
+          continue
+        }
+      }
+
+      if (flexTotal > 0) {
+        // 有flex元素
+        const currentMain = mainBase
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i]
+          const itemStyle = getStyle(item)
+          if (itemStyle.flex) {
+            itemStyle[mainSize] = (mainSpace / flexTotal) * itemStyle.flex
+          }
+          itemStyle[mainStart] = currentMain
+          itemStyle[mainEnd] =
+            itemStyle[mainStart] + mainSign * itemStyle[mainSize]
+          currentMain = itemStyle[mainEnd]
+        }
+      } else {
+        // 无flex元素，根据justifyContent分配
+        let currentMain, step // 元素的间隔数量
+        if (elementStyle.justifyContent === 'flex-start') {
+          currentMain = mainBase
+          step = 0
+        }
+        if (elementStyle.justifyContent === 'flex-end') {
+          currentMain = mainSpace * mainSize + mainBase
+          step = 0
+        }
+        if (elementStyle.justifyContent === 'center') {
+          currentMain = (mainSpace / 2) * mainSize + mainBase
+          step = 0
+        }
+        if (elementStyle.justifyContent === 'space-between') {
+          currentMain = mainBase
+          step = (mainSpace / (items.length - 1)) * mainSign
+        }
+        if (elementStyle.justifyContent === 'space-around') {
+          step = (mainSpace / items.length) * mainSign
+          currentMain = step / 2 + mainBase
+        }
+
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i]
+          itemStyle[mainStart] = currentMain
+          itemStyle[mainEnd] =
+            itemStyle[mainStart] + mainSign * itemStyle[mainSize]
+          currentMain = itemStyle[mainEnd] + step
+        }
+      }
+    })
+  }
 }
 
 function getStyle(element) {
