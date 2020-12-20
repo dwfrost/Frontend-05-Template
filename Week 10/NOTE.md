@@ -25,3 +25,16 @@
 - 把主轴方向的剩余空间按比例分配给这些元素
 - 若剩余空间为负数，所有 flex 元素尺寸都为 0，等比压缩剩余元素
 - 若没有 flex 元素，则根据 justifyContent 计算每个元素的位置
+
+4. 计算交叉轴
+
+- 根据每一行中最大元素尺寸计算行高
+- 根据行高的 flex-align 和 item-align，确定元素具体位置
+
+5. 渲染
+
+- 绘制需要依赖一个图形环境，这里采用 npm 包 images
+- 绘制在一个 viewport 上进行
+- 与绘制相关的属性有：background-color,border,background-image 等
+- 递归调用子元素的绘制方法完成 DOM 树的绘制
+- 忽略一些不需要绘制的节点
