@@ -41,3 +41,21 @@ vertical-align 会影响到 inline-block 与行内元素的对齐
 margin 堆叠（也称为 margin 塌陷）
 只会发生在正常流的 BFC 中，原理是盒要求周围是这个 margin，而不是要求盒与盒之间的 margin 都显示出来
 在 flex 和 grid 布局中，不会有 margin collapse 现象
+
+### CSS 排版|BFC 合并
+
+Block Container
+属于正常流，包括下面几种
+
+- block
+- inline-block
+- table-cell
+- flex item
+- grid item
+- table caption
+
+BFC 合并发生的条件：两个都是 block box 且 overflow:visible
+产生的影响：
+
+- 里面的行盒受 float 影响
+- 边距折叠
