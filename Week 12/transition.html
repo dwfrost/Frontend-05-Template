@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拟合抛物线</title>
+    <style>
+      .ball {
+        width: 50px;
+        height: 50px;
+        background: #000;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div>时间<input id="t" type="text" value="10" />s</div>
+    <div>初速度<input id="vy" type="text" value="-10" />px/s</div>
+    <div>水平速度<input id="vx" type="text" value="10" />px/s</div>
+    <div>重力<input id="g" type="text" value="10" />px/s2</div>
+
+    <button>抛球</button>
+  </body>
+</html>
+
+<script>
+  const btn = document.querySelector('button')
+  btn.onclick = function () {
+    createBall()
+  }
+  /**
+   * 抛物线
+   * v 速度
+   * g 加速度
+   * t 运动时间
+   */
+  function generateCubicBezier(v, g, t) {
+    var a = v / g
+    var b = t + v / g
+
+    return [
+      [
+        (a / 3 + (a + b) / 3 - a) / (b - a),
+        ((a * a) / 3 + (a * b * 2) / 3 - a * a) / (b * b - a * a),
+      ],
+      [
+        (b / 3 + (a + b) / 3 - a) / (b - a),
+        ((b * b) / 3 + (a * b * 2) / 3 - a * a) / (b * b - a * a),
+      ],
+    ]
+  }
+
+  function createBall() {
+    var ball = document.createElement('div')
+    var t = Number(document.getElementById('t').value)
+    var vx = Number(document.getElementById('vx').value)
+    var vy = Number(document.getElementById('vy').value)
+    var g = Number(document.getElementById('g').value)
+
+    ball.className = 'ball'
+    document.body.appendChild(ball)
+    ball.style.transition = `left linear ${t}s,top cubic-bezier(${generateCubicBezier(
+      vy,
+      g,
+      t
+    )}) ${t}s`
+  }
+</script>

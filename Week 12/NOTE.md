@@ -59,3 +59,81 @@ BFC 合并发生的条件：两个都是 block box 且 overflow:visible
 
 - 里面的行盒受 float 影响
 - 边距折叠
+
+### CSS 排版|Flex 排版
+
+- 收集盒进行
+- 计算盒在主轴方向的排布
+- 计算盒在交叉轴方向的排布
+
+> 摘要第 10 周笔记
+
+#### 排版，计算主轴
+
+- 找出所有 flex 元素
+- 把主轴方向的剩余空间按比例分配给这些元素
+- 若剩余空间为负数，所有 flex 元素尺寸都为 0，等比压缩剩余元素
+- 若没有 flex 元素，则根据 justifyContent 计算每个元素的位置
+
+#### 计算交叉轴
+
+- 根据每一行中最大元素尺寸计算行高
+- 根据行高的 flex-align 和 item-align，确定元素具体位置
+
+### CSS 动画与绘制
+
+#### 动画
+
+css 对 dom 的修饰分为 3 类
+
+- 控制元素的尺寸和位置
+- 控制绘制和实际渲染信息
+- 控制交互和动画信息
+
+1. Animation
+   @keyframes 定义
+   anition:使用
+
+   1.1 6 个属性
+
+   - animation-name 动画名
+   - animation-duration 动画时长
+   - animation-time-function 动画时间曲线
+   - animation-delay 动画开始前的延迟时间
+   - animation-iteration-count 动画播放次数
+   - animation-direction 动画方向
+
+     1.2 @keyframes
+     可以定义 from+to
+     也可以使用百分比，表示动画的关键帧过程
+
+```css
+@keyframes mykf {
+  from {
+    background: red;
+  }
+  to {
+    background: green;
+  }
+}
+div {
+  animation: mykf 5s infinite;
+}
+```
+
+2. Transition
+
+2.1 属性
+
+- transition-property 要变换的属性
+- transition-duration 变换的时长
+- transition-time-function 变换的时间曲线
+- transition-delay 变换的延迟
+
+[贝塞尔曲线](https://cubic-bezier.com/)
+
+常用时间曲线
+
+- ease 缓动动画，缓动起步和缓动结束，弹框等常用
+- ease-in 缓动启动 常用于动画退出
+- ease-out 缓动结束 常用于动画出现
