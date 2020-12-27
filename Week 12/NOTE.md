@@ -137,3 +137,29 @@ div {
 - ease 缓动动画，缓动起步和缓动结束，弹框等常用
 - ease-in 缓动启动 常用于动画退出
 - ease-out 缓动结束 常用于动画出现
+
+#### 颜色
+
+自然界三原色 品红、黄、青
+程序三种基本颜色 RGB
+
+#### 绘制
+
+1. 几何图片
+
+- border
+- box-shadow
+- border-radius
+
+2. 文字
+
+- font
+- text-decoration
+
+3. 位图
+
+- background-image
+
+小技巧：
+可以使用 svg+uri 的方式来绘制比较复杂的图形
+svg 支持 path，所以只要有 uri，就可以支持复杂图形的绘制
