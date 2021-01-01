@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrap">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+    </div>
+  </body>
+</html>
+
+<script>
+  // 需求：将dom逆序排列，即4321
+
+  // 先清空，在倒序插入
+  function sortDOM1() {
+    const wrap = document.querySelector('.wrap')
+    const wrapArr = Array.prototype.slice.call(wrap.childNodes)
+    wrap.innerHTML = ''
+    console.log(wrapArr)
+
+    const len = wrapArr.length
+    for (let i = len - 1; i--; i >= 0) {
+      wrap.appendChild(wrapArr[i])
+    }
+  }
+  // sortDOM1()
+
+  // 隐藏知识点 appendChild时，会删除现有的dom节点，不需要手动删除
+  function sortDOM2() {
+    const wrap = document.querySelector('.wrap')
+    let len = wrap.childNodes.length
+
+    // 和sort1是一样的操作
+    while (len-- > 0) {
+      wrap.appendChild(wrap.childNodes[len])
+    }
+  }
+  // sortDOM2()
+
+  // 利用range进行重排，性能更好
+  function sortByRange(){
+    const wrap = document.querySelector('.wrap')
+
+    // 利用文档片段，在内存中重排，然后依次挂载到DOM
+    let range = new Range()
+    range.selectNodeContents(wrap)
+    let fragment = range.extractContents()
+    let l = fragment.childNodes.length
+
+    while(l-->0){
+      fragment.appendChild(fragment.childNodes[l])
+    }
+    wrap.appendChild(fragment)
+  }
+  sortByRange()
+</script>

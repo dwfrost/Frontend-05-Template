@@ -89,3 +89,55 @@ addEventListener
 
 这段代码中，先捕获，顺序是 div>span
 再冒泡，顺序是 span>div
+
+### Range API
+
+比节点 API 更细致，比如操作半个节点
+
+```js
+var range = new Range() // 创建Range对象
+range.setStart(element, 9) // 设置起始点
+range.setEnd(element, 4) // 设置终点
+var range = document.getSelection().getRangeAt(0)
+
+// 设置起点在某个节点之前
+range.setStartBefore
+// 设置终点在某个节点之前
+range.setEndBefore
+// 设置起点在节点之后
+range.setStartAfter
+// 设置终点在节点之后
+range.setEndAfter
+// Range 的起始和结束节点的父节点与 referenceNode 的父节点相同。
+range.selectNode(referenceNode)
+// 选中元素的所有内容
+range.selectNodeContents
+
+var fragment = range.extractContents()
+range.insertNode(document.createTextNode('aa'))
+```
+
+tips:
+在操作DOM的框架库中，range和fragment通常一起工作，在内存中实现元素的增删改，然后一次性执行DOM操作。这样可以减少DOM操作，优化性能。
+
+### CSSOM API
+
+`document.styleSheets` 获取CSS
+
+- Rules
+`document.styleSheets[0].cssRules`
+`document.styleSheets[0].insertRule("p {color:pink;}",0)` 在某个位置插入样式
+`document.styleSheets[0].removeRule(0)` 删除某个位置的样式
+
+- CSSStyleRule
+
+- window.getComputedStyle(el,pseudoEl)
+el 想获取的元素
+pseudoEl 伪元素
+应用：比如动画的中间态，或者伪元素等样式的获取
+
+### CSSOM View
+
+window 视窗，浏览器全局对象
+
+

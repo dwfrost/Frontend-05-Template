@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 这里要关闭vscode自动格式化，否则会换行 -->
+    <div class="div1">123<span style="background-color: orange">456</span><span>789</span>
+    </div>
+
+    <div class="div2">1234567890</div>
+
+    <div class="div3">123<span style="background-color: orange">456</span><span>789</span>
+    </div>
+  </body>
+</html>
+
+<script>
+
+  // 删除整个标签
+  let range = new Range()
+  const div1 = document.querySelector('.div1')
+  console.log(div1.childNodes)
+  range.setStart(div1.childNodes[0], 3)
+  range.setEnd(div1.childNodes[2], 0)
+  // range.deleteContents()
+  range.extractContents()
+
+
+  // 删除标签中的内容
+  var div2 = document.querySelector('.div2')
+  // var range2 = document.createRange()
+  var range2 = new Range()
+  var content = div2.firstChild
+  range2.setStart(content, 1)
+  range2.setEnd(content, 7)
+  range2.deleteContents()
+
+
+  // 删除半个标签
+  let range3 = new Range()
+  const div3 = document.querySelector('.div3')
+  range3.setStart(div3.childNodes[1].childNodes[0], 1)
+  range3.setEnd(div3.childNodes[2], 0)
+  range3.extractContents()
+</script>
