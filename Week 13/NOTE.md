@@ -138,6 +138,32 @@ pseudoEl 伪元素
 
 ### CSSOM View
 
-window 视窗，浏览器全局对象
+#### window对象
+视窗，浏览器全局对象
 
+比较重要的值
+window.innerWidth 视窗宽度
+window.innerHeight 视窗高度
+window.devicePixelRatio 设备像素比，普通是1:1，retina屏有可能1:2和1:3
 
+window.open(url,type)
+type：打开方式 _self当前页面 _blank新页面
+还有第三个参数，用于控制新窗口的宽高和位置（通常弹框广告可以这样实现，不推荐）
+
+#### 关于scroll
+scrollTop
+scrollLeft
+scrollWidth
+scrollHeight
+scroll(x,y)
+scrollBy(x,y)
+scrollIntoView() 每个元素都有的方法，滚动到视图可见区域
+
+window.scrollX
+window.scrollY
+window.scroll(x,y)
+window.scrollBy(x,y)
+
+#### 关于layout
+getClientRects() 获取元素占据页面的所有矩形区域 
+getBoundingClientRects() 返回元素的大小及其相对于视口的位置（使用比例很高）
