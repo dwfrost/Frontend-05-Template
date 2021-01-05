@@ -6,6 +6,8 @@
 
 ### 组件基础
 
+组件由 Markup 和 js 组成。
+
 #### 对象和组件
 
 1. 对象
@@ -56,3 +58,47 @@ content 型
 
 template 型
 子组件是动态的，比如列表，传入 listData，就渲染出一个列表组件
+
+### 为组件添加 JSX
+
+1. 初始化项目
+   `npm init -y`
+   依次安装
+
+```
+npm install webpack babel-loader @babel/core @babel/preset-env @babel/plugin-transform-react-jsx -D
+```
+
+2. 新建入口文件 main.js
+
+```js
+for (let i = 0; i < 10; i++) {
+  console.log(i)
+}
+
+const mydiv = <div className="myclass">123</div>
+```
+
+3. 新建 webpack.config.js
+
+```js
+module.exports = {
+  entry: './main.js',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          // 编译babel，转成es5
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-transform-react-jsx'], // 编译jsx
+          },
+        },
+      },
+    ],
+  },
+  mode: 'development', // 去掉就是生产模式
+}
+```
