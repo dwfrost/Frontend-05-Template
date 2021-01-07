@@ -66,8 +66,10 @@ template 型
    依次安装
 
 ```
-npm install webpack babel-loader @babel/core @babel/preset-env @babel/plugin-transform-react-jsx -D
+npm install webpack webpack-cli babel-loader @babel/core @babel/preset-env @babel/plugin-transform-react-jsx -D
 ```
+
+注意，配合 webpack-dev-server 使用时，必须安装 webpack-cli@3 的版本，现在 webpack-cli@4 会报错
 
 2. 新建入口文件 main.js
 

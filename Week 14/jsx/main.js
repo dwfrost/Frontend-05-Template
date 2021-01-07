@@ -1,11 +1,18 @@
 function createElement(tag, attributes, ...children) {
   const dom = document.createElement(tag)
 
+  // 设置属性
   for (let key in attributes) {
     dom.setAttribute(key, attributes[key])
   }
 
+  // 处理子节点
   for (let child of children) {
+    // 处理文本节点
+    console.log('child', child)
+    if (typeof child === 'string') {
+      child = document.createTextNode(child)
+    }
     dom.appendChild(child)
   }
   return dom
@@ -13,9 +20,9 @@ function createElement(tag, attributes, ...children) {
 
 const mydiv = (
   <div className="myclass">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span>1</span>
+    <span>2</span>
+    <span>3</span>
   </div>
 )
 
