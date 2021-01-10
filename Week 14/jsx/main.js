@@ -68,19 +68,35 @@ class Carousel extends Component {
         let x = event.clientX - startX
 
         // 鼠标移动时，整体偏移
-        for (let child of children) {
-          child.style.transition = 'none'
-          child.style.transform = `translateX(${-position * width + x}px)`
+        // for (let child of children) {
+        //   child.style.transition = 'none'
+        //   child.style.transform = `translateX(${-position * width + x}px)`
+        // }
+
+        // 优化版本：不需要全部child进行偏移
+        let current = position - (x - (x % width)) / width
+        for (let offset of [-1, 0, 1]) {
+          let pos = current + offset
+          pos = (pos + children.length) % children.length
+          children[pos].style.transition = 'none'
+          children[pos].style.transform = `translateX(${
+            -pos * width + offset * width + x
+          }px)`
         }
       }
       const up = (event) => {
         let x = event.clientX - startX
-        console.log('x', x)
         position = position - Math.round(x / width)
         console.log('position', position)
-        for (let child of children) {
-          child.style.transition = ''
-          child.style.transform = `translateX(${-position * width}px)`
+        for (let offset of [
+          0,
+          -Math.sign(Math.round(x / width) - x + (width / 2) * Math.sign(x)),
+        ]) {
+          let pos = position + offset
+          children[pos].style.transition = ''
+          children[pos].style.transform = `translateX(${
+            -pos * width + offset * width
+          }px)`
         }
         document.removeEventListener('mousemove', move)
         document.removeEventListener('mouseup', up)
