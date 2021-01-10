@@ -55,6 +55,41 @@ class Carousel extends Component {
     //   }, 16)
     // }, 1000)
 
+    // 手动轮播
+    let position = 0
+    this.root.addEventListener('mousedown', (event) => {
+      console.log(event.clientX, event.clientY)
+      let { children } = this.root
+      let startX = event.clientX
+
+      const { width } = this.root.getBoundingClientRect()
+
+      const move = (event) => {
+        let x = event.clientX - startX
+
+        // 鼠标移动时，整体偏移
+        for (let child of children) {
+          child.style.transition = 'none'
+          child.style.transform = `translateX(${-position * width + x}px)`
+        }
+      }
+      const up = (event) => {
+        let x = event.clientX - startX
+        console.log('x', x)
+        position = position - Math.round(x / width)
+        console.log('position', position)
+        for (let child of children) {
+          child.style.transition = ''
+          child.style.transform = `translateX(${-position * width}px)`
+        }
+        document.removeEventListener('mousemove', move)
+        document.removeEventListener('mouseup', up)
+      }
+
+      document.addEventListener('mousemove', move)
+      document.addEventListener('mouseup', up)
+    })
+
     return this.root
   }
 
