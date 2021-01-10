@@ -1,33 +1,29 @@
-function createElement(tag, attributes, ...children) {
-  const dom = document.createElement(tag)
-
-  // 设置属性
-  for (let key in attributes) {
-    dom.setAttribute(key, attributes[key])
+import { createElement, Component } from './framework'
+class Carousel extends Component {
+  constructor() {
+    super()
   }
-
-  // 处理子节点
-  for (let child of children) {
-    // 处理文本节点
-    console.log('child', child)
-    if (typeof child === 'string') {
-      child = document.createTextNode(child)
-    }
-    dom.appendChild(child)
+  render() {
+    return document.createElement('div')
   }
-  return dom
 }
 
 const mydiv = (
-  <div className="myclass">
+  <Carousel className="carousel-wrap">
     <span>1</span>
     <span>2</span>
     <span>3</span>
-  </div>
+  </Carousel>
+  // <div className="myclass">
+  //   <span>1</span>
+  //   <span>2</span>
+  //   <span>3</span>
+  // </div>
 )
 
 console.log('mydiv', mydiv)
-document.body.appendChild(mydiv)
+// document.body.appendChild(mydiv)
+mydiv.mountTo(document.body)
 
 // var mydiv = createElement("div", {
 //   className: "myclass"

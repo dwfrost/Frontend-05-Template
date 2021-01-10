@@ -104,3 +104,19 @@ module.exports = {
   mode: 'development', // 去掉就是生产模式
 }
 ```
+
+### 手动实现 jsx 组件
+
+1.通过 jsx 结果逆推出需要的函数，用来实现组件中普通节点(div,span)，文本节点和自定义组件
+
+2.可以推出 jsx 的基本入参结构是
+[type,attributes,...children]
+
+3.对于元素的属性，可以使用 for in 进行遍历，逐个 setAttribute
+
+4.对于子节点 children，使用 for of 进行遍历，逐个 appendChild
+注意文本节点需要 document.createTextNode 来得到文本节点，才能 append
+
+5.对于自定义组件，这里 jsx 认为它是一个 class，所以需要自定义一个 class，同样实现设置属性，添加子节点，以及让父节点添加自己的方法
+然后在自定义的 createElement 中，发现是 class，实例化即可
+具体代码，参考 framework.js
