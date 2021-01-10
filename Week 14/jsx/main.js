@@ -5,19 +5,55 @@ class Carousel extends Component {
     this.attributes = Object.create(null)
   }
   setAttribute(name, value) {
-    console.log(name, value)
+    // console.log(name, value)
     this.attributes[name] = value
   }
   render() {
     this.root = document.createElement('div')
-    console.log('this.attributes', this.attributes)
+    this.root.classList.add('carousel-wrap')
+    console.log(this.root.classList)
+    // console.log('this.attributes', this.attributes)
     for (let item of this.attributes.imgList) {
-      const img = document.createElement('img')
-      img.src = item
+      const img = document.createElement('div')
+      img.style.backgroundImage = `url(${item})`
+      console.log('img', img)
       this.root.appendChild(img)
     }
 
-    console.log('thislroot', this.root)
+    // 普通理解的版本 有视觉上问题
+    // let current = 0
+    // setInterval(() => {
+    //   current++
+    //   current = current % this.root.children.length
+    //   for (let item of this.root.children) {
+    //     item.style.transform = `translateX(-${100 * current}%)`
+    //   }
+    // }, 1000)
+
+    // 改良后的版本
+    // let { children } = this.root
+    // let currentIndex = 0
+
+    // setInterval(() => {
+    //   let nextIndex = (currentIndex + 1) % children.length
+
+    //   let currentItem = children[currentIndex]
+    //   let nextItem = children[nextIndex]
+
+    //   // 这2行代码的目的，是为了在第2轮及以后的轮播中快速就位
+    //   nextItem.style.transition = 'none'
+    //   nextItem.style.transform = `translateX(${100 - nextIndex * 100}%)`
+
+    //   // 16ms是浏览器的一帧，这里的目的是下一帧进入动画时当前元素和下一个元素已就位
+    //   setTimeout(() => {
+    //     nextItem.style.transition = '' // 设为''后，css的样式就生效
+    //     currentItem.style.transform = `translateX(${
+    //       -100 - currentIndex * 100
+    //     }%)`
+    //     nextItem.style.transform = `translateX(${-nextIndex * 100}%)`
+    //     currentIndex = nextIndex
+    //   }, 16)
+    // }, 1000)
 
     return this.root
   }
@@ -34,7 +70,7 @@ let imgList = [
 ]
 
 const mydiv = (
-  <Carousel imgList={imgList} className="carousel-wrap">
+  <Carousel imgList={imgList}>
     {/* <span>1</span>
     <span>2</span>
     <span>3</span> */}
@@ -46,7 +82,7 @@ const mydiv = (
   // </div>
 )
 
-console.log('mydiv', mydiv)
+// console.log('mydiv', mydiv)
 // document.body.appendChild(mydiv)
 mydiv.mountTo(document.body)
 
