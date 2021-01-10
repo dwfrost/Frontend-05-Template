@@ -28,7 +28,7 @@ export function createElement(type, attributes, ...children) {
 export class Component {
   constructor(arg) {
     // console.log('arg', arg)
-    this.root = this.render(arg)
+    // this.root = this.render(arg)
   }
   setAttribute(name, value) {
     this.root.setAttribute(name, value)
@@ -39,6 +39,7 @@ export class Component {
     child.mountTo(this.root)
   }
   mountTo(parent) {
+    console.log('parent', parent)
     parent.appendChild(this.root)
   }
 }
