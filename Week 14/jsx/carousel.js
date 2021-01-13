@@ -11,12 +11,12 @@ export class Carousel extends Component {
   render() {
     this.root = document.createElement('div')
     this.root.classList.add('carousel-wrap')
-    console.log(this.root.classList)
+    // console.log(this.root.classList)
     // console.log('this.attributes', this.attributes)
     for (let item of this.attributes.imgList) {
       const img = document.createElement('div')
       img.style.backgroundImage = `url(${item})`
-      console.log('img', img)
+      // console.log('img', img)
       this.root.appendChild(img)
     }
 

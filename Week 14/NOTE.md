@@ -120,3 +120,10 @@ module.exports = {
 5.对于自定义组件，这里 jsx 认为它是一个 class，所以需要自定义一个 class，同样实现设置属性，添加子节点，以及让父节点添加自己的方法
 然后在自定义的 createElement 中，发现是 class，实例化即可
 具体代码，参考 framework.js
+
+### 轮播图实现
+
+运行步骤
+1.cd Week 14/jsx
+2.npm run serve
+3.cd dist,打开 index.html
