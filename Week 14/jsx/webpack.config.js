@@ -1,5 +1,12 @@
 module.exports = {
-  entry: './main.js',
+  entry: {
+    main: './main.js',
+    'animation-demo': './animation-demo.js',
+  },
+  output: {
+    path: __dirname,
+    filename: './dist/[name].js',
+  },
   module: {
     rules: [
       {
@@ -20,8 +27,8 @@ module.exports = {
     ],
   },
   mode: 'development',
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-  },
+  // devServer: {
+  //   contentBase: './dist',
+  //   hot: true,
+  // },
 }

@@ -127,3 +127,10 @@ module.exports = {
 1.cd Week 14/jsx
 2.npm run serve
 3.cd dist,打开 index.html
+
+### 动画实现
+
+运行步骤
+1.cd Week 14/jsx
+2.npm run serve
+3.cd dist,打开 animation_demo.html
