@@ -95,8 +95,8 @@ Connection:keep-alive
 Transfer-Encoding:chunked
 
 
-# body
-26
-<html><body>Hello World</body></html>
-0
+# chunked body
+26 # 十六进制的数字
+<html><body>Hello World</body></html> # 内容部分
+0 # 十六进制的0
 ```

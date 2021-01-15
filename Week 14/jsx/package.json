@@ -17,6 +17,7 @@
     "@babel/plugin-transform-react-jsx": "^7.12.12",
     "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.2.2",
+    "html-webpack-plugin": "^4.5.1",
     "webpack": "^5.11.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.1"

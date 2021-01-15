@@ -126,11 +126,11 @@ module.exports = {
 运行步骤
 1.cd Week 14/jsx
 2.npm run serve
-3.cd dist,打开 index.html
+3.开发模式下，打开 http://localhost:8080/main.html
 
 ### 动画实现
 
 运行步骤
 1.cd Week 14/jsx
 2.npm run serve
-3.cd dist,打开 animation_demo.html
+3.开发模式下，打开 http://localhost:8080/animation.html
