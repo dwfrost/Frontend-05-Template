@@ -14,11 +14,11 @@ export class TimeLine {
   }
   start() {
     let startTime = Date.now()
-    console.log('start', startTime)
+    // console.log('start', startTime)
     this[PAUSE_TIME] = 0
 
     this[TICK] = () => {
-      console.log('this[PAUSE_TIME]', this[PAUSE_TIME])
+      // console.log('this[PAUSE_TIME]', this[PAUSE_TIME])
       // let t = Date.now() - startTime
       let now = Date.now()
       for (let animation of this[ANIMIATIONS]) {
@@ -30,16 +30,24 @@ export class TimeLine {
 
         if (this[START_TIME].get(animation) < startTime) {
           // 可能动画执行在timeline start之前
-          t = now - startTime - this[PAUSE_TIME]
+          t = now - startTime - this[PAUSE_TIME] - animation.delay
         } else {
-          t = now - this[START_TIME].get(animation) - this[PAUSE_TIME]
+          t =
+            now -
+            this[START_TIME].get(animation) -
+            this[PAUSE_TIME] -
+            animation.delay
         }
         // 当动画执行时间超过设定时间时，清除动画，并修正末尾传入时间
         if (animation.duration < t) {
           this[ANIMIATIONS].delete(animation)
           t = animation.duration
         }
-        animation.receive(t)
+        // console.log('t', t)
+        // t<0说明动画还在延迟阶段
+        if (t > 0) {
+          animation.receive(t)
+        }
       }
       this[TICK_HANDLER] = requestAnimationFrame(this[TICK])
     }
@@ -73,6 +81,9 @@ export class Animation {
     timingFunction,
     template
   ) {
+    timingFunction = timingFunction || ((v) => v)
+    template = template || ((v) => v)
+
     this.object = object
     this.property = property
     this.startValue = startValue
@@ -90,9 +101,11 @@ export class Animation {
     // console.log('time', time)
     let range = this.endValue - this.startValue
 
-    // 属性值变化公式（斜率固定）
+    // 属性值变化公式
+
+    const progress = this.timingFunction(time / this.duration)
     this.object[this.property] = this.template(
-      this.startValue + (range * time) / this.duration
+      this.startValue + range * progress
     )
   }
 }

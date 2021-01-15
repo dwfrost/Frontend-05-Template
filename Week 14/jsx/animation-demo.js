@@ -11,7 +11,7 @@ window.animation = new Animation(
   0,
   500,
   2000,
-  0,
+  1000,
   null,
   template
 )
