@@ -125,12 +125,10 @@ module.exports = {
 
 运行步骤
 1.cd Week 14/jsx
-2.npm run serve
-3.开发模式下，打开 http://localhost:8080/main.html
+2.npm run serve 3.开发模式下，打开 http://localhost:8080/main.html
 
 ### 动画实现
 
 运行步骤
 1.cd Week 14/jsx
-2.npm run serve
-3.开发模式下，打开 http://localhost:8080/animation.html
+2.npm run serve 3.开发模式下，打开 http://localhost:8080/animation.html
