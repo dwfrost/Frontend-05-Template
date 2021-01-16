@@ -8,11 +8,16 @@ const PAUSE_TIME = Symbol('pause-time')
 
 export class TimeLine {
   constructor() {
+    this.state = 'inited'
     // 时间线的动画是一个list
     this[ANIMIATIONS] = new Set()
     this[START_TIME] = new Map()
   }
   start() {
+    if (!this.state === 'inited') {
+      return
+    }
+    this.state = 'started'
     let startTime = Date.now()
     // console.log('start', startTime)
     this[PAUSE_TIME] = 0
@@ -55,15 +60,33 @@ export class TimeLine {
   }
 
   pause() {
+    if (this.state !== 'started') {
+      return
+    }
+    this.state = 'paused'
     this[PAUSE_START] = Date.now()
     cancelAnimationFrame(this[TICK_HANDLER])
   }
   resume() {
+    if (this.state !== 'paused') {
+      return
+    }
+    this.state = 'started'
     this[PAUSE_TIME] += Date.now() - this[PAUSE_START]
     this[TICK]()
   }
 
-  reset() {}
+  reset() {
+    this.pause()
+    this.state = 'inited'
+    let startTime = Date.now()
+    this[PAUSE_TIME] = 0
+    this[ANIMIATIONS] = new Set()
+    this[START_TIME] = new Map()
+    this[PAUSE_START] = 0
+
+    this[TICK_HANDLER] = null
+  }
   add(animation, startTime = Date.now()) {
     this[ANIMIATIONS].add(animation)
     this[START_TIME].set(animation, startTime)
