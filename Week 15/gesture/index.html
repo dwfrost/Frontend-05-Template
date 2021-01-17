@@ -7,10 +7,36 @@
   </head>
   <body oncontextmenu="event.preventDefault()"></body>
 </html>
-<script src="./index.js"></script>
+<!-- <script src="./index.js"></script> -->
 
-<script>
-  document.documentElement.addEventListener('tap', () => {
-    // console.log('tap it')
+<script type="module">
+  import { enableGesture } from './index.js'
+  enableGesture(document.documentElement)
+  document.documentElement.addEventListener('tap', (event) => {
+    console.log('tap', event)
+  })
+  document.documentElement.addEventListener('tapEnd', (event) => {
+    console.log('tapEnd', event)
+  })
+  document.documentElement.addEventListener('press', (event) => {
+    console.log('press', event)
+  })
+  document.documentElement.addEventListener('pressEnd', (event) => {
+    console.log('pressEnd', event)
+  })
+  document.documentElement.addEventListener('panStart', (event) => {
+    console.log('panStart', event)
+  })
+  document.documentElement.addEventListener('pan', (event) => {
+    console.log('pan', event)
+  })
+  document.documentElement.addEventListener('panEnd', (event) => {
+    console.log('panEnd', event)
+  })
+  document.documentElement.addEventListener('flick', (event) => {
+    console.log('flick', event)
+  })
+  document.documentElement.addEventListener('cancel', (event) => {
+    console.log('cancel', event)
   })
 </script>
