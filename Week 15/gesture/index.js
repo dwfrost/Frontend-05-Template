@@ -7,7 +7,7 @@ let isListeningMouse = false
 
 el.addEventListener('mousedown', (event) => {
   const context = Object.create(null)
-  console.log(event.button)
+  // console.log(event.button)
 
   contexts.set('mouse' + (1 << event.button), context)
 
@@ -38,15 +38,15 @@ el.addEventListener('mousedown', (event) => {
     contexts.delete('mouse' + (1 << event.button))
 
     if (event.buttons === 0) {
-      el.removeEventListener('mousemove', mousemove)
-      el.removeEventListener('mouseup', mouseup)
+      document.removeEventListener('mousemove', mousemove)
+      document.removeEventListener('mouseup', mouseup)
       isListeningMouse = false
     }
   }
 
   if (!isListeningMouse) {
-    el.addEventListener('mousemove', mousemove)
-    el.addEventListener('mouseup', mouseup)
+    document.addEventListener('mousemove', mousemove)
+    document.addEventListener('mouseup', mouseup)
     isListeningMouse = true
   }
 })
@@ -92,8 +92,18 @@ el.addEventListener('touchcancel', (event) => {
 // context.isPress = false // 按压
 function start(point, context) {
   // console.log('start', point.clientX, point.clientY)
+  dispatch('tap')
+
   context.startX = point.clientX
   context.startY = point.clientY
+
+  context.points = [
+    {
+      t: Date.now(),
+      x: point.clientX,
+      y: point.clientY,
+    },
+  ]
 
   context.isTap = true
   context.isPan = false
@@ -101,7 +111,7 @@ function start(point, context) {
 
   // 按压
   context.handler = setTimeout(() => {
-    console.log('press')
+    // console.log('press')
     context.isTap = false
     context.isPan = false
     context.isPress = true
@@ -118,30 +128,70 @@ function move(point, context) {
     context.isPan = true
     context.isPress = false
 
-    console.log('pan start')
+    // console.log('pan start')
     clearTimeout(context.handler)
   }
 
   if (context.isPan) {
-    console.log(dx, dy)
-    console.log('pan')
+    // console.log(dx, dy)
+    // console.log('pan')
   }
+
+  // 在移动过程中，只选取500ms内的点进行速度计算
+  context.points = context.points.filter((point) => Date.now() - point.t < 500)
+  context.points.push({
+    t: Date.now(),
+    x: point.clientX,
+    y: point.clientY,
+  })
+
   // console.log('move', point.clientX, point.clientY)
 }
 function end(point, context) {
   if (context.isTap) {
-    console.log('tap end')
+    // console.log('tap end')
     clearTimeout(context.handler)
   }
   if (context.isPan) {
-    console.log('pan end')
+    // console.log('pan end')
   }
   if (context.isPress) {
-    console.log('press end')
+    // console.log('press end')
   }
+
+  let d, v
+  context.points = context.points.filter((point) => Date.now() - point.t < 500)
+  if (!context.points.length) {
+    v = 0
+  } else {
+    // 计算鼠标最近500ms内移动的距离
+    d = Math.sqrt(
+      (point.clientX - context.points[0].x) ** 2 +
+        (point.clientY - context.points[0].y) ** 2
+    )
+    v = d / (Date.now() - context.points[0].t)
+  }
+  console.log('v', v)
+  if (v > 1.5) {
+    // 经验值，鼠标速度大于1.5px/ms，则认为是flick
+    console.log('flick')
+    context.isFlick = true
+  } else {
+    context.isFlick = false
+  }
+
   // console.log('end', point.clientX, point.clientY)
 }
 function cancel(point, context) {
   // console.log('cancel', point.clientX, point.clientY)
   clearTimeout(context.handler)
+}
+
+function dispatch(type, properties) {
+  let event = new Event(type)
+
+  for (let name in properties) {
+    event[name] = properties[name]
+  }
+  el.dispatchEvent(event)
 }
