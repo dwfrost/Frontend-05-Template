@@ -17,7 +17,7 @@ touchcancel
 
 ### 封装 9 类事件或手势
 
-- tap 轻触
+- start 轻触
 - tapEnd
 - press 按压
 - pressEnd

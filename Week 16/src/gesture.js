@@ -89,7 +89,7 @@ export class Listener {
 }
 
 // 处理分发一共9个事件
-// tap
+// start
 // tapEnd
 // press
 // pressEnd
@@ -104,7 +104,10 @@ export class Recognizer {
   }
   start(point, context) {
     // console.log('start', point.clientX, point.clientY)
-    this.dispatcher.dispatch('tap')
+    this.dispatcher.dispatch('start', {
+      clientX: point.clientX,
+      clientY: point.clientY,
+    })
 
     context.startX = point.clientX
     context.startY = point.clientY
