@@ -232,6 +232,7 @@ export class Recognizer {
         clientY: point.clientY,
         isVertical: context.isVertical,
         isFlick: context.isFlick,
+        velocity: v,
       })
     }
     // console.log('end', point.clientX, point.clientY)

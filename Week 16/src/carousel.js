@@ -28,6 +28,8 @@ export class Carousel extends Component {
     const timeline = new TimeLine()
     timeline.start()
 
+    let handler = null
+
     let { children } = this.root
     let position = 0
     // const { width } = this.root.getBoundingClientRect()
@@ -41,6 +43,7 @@ export class Carousel extends Component {
 
     this.root.addEventListener('start', (event) => {
       timeline.pause()
+      clearInterval(handler)
 
       // 计算动画的时间进度
       let progress = (Date.now() - animationTime) / 1500
@@ -50,10 +53,10 @@ export class Carousel extends Component {
       // console.log('pan', event.clientX - event.startX)
       let x = event.clientX - event.startX - animationX
       // 优化版本：不需要全部child进行偏移
-      console.log('x', x)
-      console.log('width', width)
+      // console.log('x', x)
+      // console.log('width', width)
       let current = position - (x - (x % width)) / width
-      console.log('current', current)
+      // console.log('current', current)
       for (let offset of [-1, 0, 1]) {
         let pos = current + offset
         pos = ((pos % children.length) + children.length) % children.length
@@ -64,22 +67,59 @@ export class Carousel extends Component {
       }
     })
     this.root.addEventListener('panEnd', (event) => {
+      // 基于pan的代码改造
+      timeline.reset()
+      timeline.start()
+      handler = setInterval(nextPicture, 2000)
+
       let x = event.clientX - event.startX - animationX
-      position = position - Math.round(x / width)
-      console.log('position', position)
-      for (let offset of [
-        0,
-        -Math.sign(Math.round(x / width) - x + (width / 2) * Math.sign(x)),
-      ]) {
-        let pos = position + offset
-        children[pos].style.transition = ''
-        children[pos].style.transform = `translateX(${
-          -pos * width + offset * width
-        }px)`
+      let current = position - (x - (x % width)) / width
+
+      let direction = Math.round((x % width) / width)
+
+      if (event.isFlick) {
+        if (event.velocity < 0) {
+          direction = Math.ceil((x % width) / width)
+        } else {
+          direction = Math.floor((x % width) / width)
+        }
       }
+
+      for (let offset of [-1, 0, 1]) {
+        let pos = current + offset
+        pos = ((pos % children.length) + children.length) % children.length
+        children[pos].style.transition = 'none'
+
+        timeline.add(
+          new Animation(
+            children[pos].style,
+            'transform',
+            -pos * width + offset * width + (x % width),
+            -pos * width + offset * width + direction * width,
+            500,
+            0,
+            ease,
+            (v) => `translateX(${v}px)`
+          )
+        )
+      }
+      position = position - (x - (x % width)) / width - direction
+      position =
+        ((position % children.length) + children.length) % children.length
+
+      // for (let offset of [
+      //   0,
+      //   -Math.sign(Math.round(x / width) - x + (width / 2) * Math.sign(x)),
+      // ]) {
+      //   let pos = position + offset
+      //   children[pos].style.transition = ''
+      //   children[pos].style.transform = `translateX(${
+      //     -pos * width + offset * width
+      //   }px)`
+      // }
     })
 
-    setInterval(() => {
+    let nextPicture = () => {
       let nextIndex = (position + 1) % children.length
 
       let currentItem = children[position]
@@ -128,7 +168,8 @@ export class Carousel extends Component {
       // }, 16)
 
       position = nextIndex
-    }, 1000)
+    }
+    handler = setInterval(nextPicture, 2000)
 
     return this.root
   }
