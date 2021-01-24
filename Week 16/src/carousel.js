@@ -50,6 +50,7 @@ export class Carousel extends Component {
       let progress = (Date.now() - animationTime) / 1500
       animationX = ease(progress) * 500 - 500 // 减500，是移到了下一帧
 
+      // 可以再封装一个tap事件
       this.triggerEvent('click', {
         position: this[STATE].position,
         url: this[ATTRIBUTE].imgList[this[STATE].position].url,
