@@ -1,6 +1,8 @@
 export function createElement(type, attributes, ...children) {
   let dom
 
+  // console.log('type', type)
+
   if (typeof type === 'string') {
     dom = new ElementWrapper(type)
   } else {
@@ -12,18 +14,27 @@ export function createElement(type, attributes, ...children) {
     dom.setAttribute(key, attributes[key])
   }
 
-  // 处理子节点
-  for (let child of children) {
-    // 处理文本节点
-    // console.log('child', child)
-    if (typeof child === 'string') {
-      // child = document.createTextNode(child)
-      child = new TextWrapper(child)
+  let processChildren = (children) => {
+    // 处理子节点
+    for (let child of children) {
+      console.log('processChildren-child', child)
+      if (typeof child === 'object' && child instanceof Array) {
+        processChildren(child)
+        continue
+      }
+
+      // 处理文本节点
+      if (typeof child === 'string') {
+        // child = document.createTextNode(child)
+        child = new TextWrapper(child)
+      }
+      // console.log('dom', dom)
+      dom.appendChild(child)
+      // child.mountTo(dom)
     }
-    console.log('dom', dom)
-    dom.appendChild(child)
-    // child.mountTo(dom)
   }
+  processChildren(children)
+
   return dom
 }
 
@@ -41,7 +52,7 @@ export class Component {
   }
   appendChild(child) {
     // console.log(this.root)
-    // console.log('child', child)
+    console.log('child', child)
     // this.root.appendChild(child)
     if (!this.root) {
       // console.log('this.render', this.render)
@@ -55,7 +66,7 @@ export class Component {
       // console.log('this.render', this.render)
       this.render()
     }
-    // console.log('this.root', this.root)
+    console.log('this.root', this.root)
     // console.log('parent', parent)
     parent.appendChild(this.root)
   }
