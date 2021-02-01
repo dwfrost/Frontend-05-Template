@@ -103,3 +103,49 @@ module.exports = class extends (
 ```
 
 ### 管理依赖
+
+有 2 种方式
+
+- 安装单个依赖（一般少用到）
+- 安装多个依赖
+
+```js
+module.exports = class extends (
+  Generator
+) {
+   ...
+
+  // 安装单个依赖
+  installingLodash() {
+    if (this.answers.installLodash) {
+      this.npmInstall(['lodash'], { 'save-dev': true })
+    }
+  }
+
+// 安装多个依赖
+  findPackageJson() {
+    const pkgJson = {
+      devDependencies: {
+        eslint: '^3.15.0',
+      },
+      dependencies: {
+        react: '^16.2.0',
+      },
+    }
+
+    // Extend or create package.json file in destination path
+    this.fs.extendJSON(this.destinationPath('public/package.json'), pkgJson)
+  }
+
+  installPackageJson() {
+    this.npmInstall()
+  }
+}
+```
+
+## 生成 vue 项目
+
+### 开始前的思考
+
+- 需要安装相关依赖
+- 需要配置相关模板文件
