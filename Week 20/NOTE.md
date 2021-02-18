@@ -47,3 +47,35 @@ console.log('hello hooks')
 process.exit(1)
 
 ```
+
+### 使用 eslint 的 Node API
+
+```js
+// hooks/pre-commit
+const { ESLint } = require('eslint')
+
+;(async function main() {
+  // 1. Create an instance.
+  const eslint = new ESLint()
+
+  // 2. Lint files.
+  const results = await eslint.lintFiles(['index.js'])
+
+  // 3. Format the results.
+  const formatter = await eslint.loadFormatter('stylish')
+  const resultText = formatter.format(results)
+
+  // 4. Output it.
+  console.log('resultText', resultText)
+  for (let result of results) {
+    // console.log(result)
+    // 如果出现eslint错误，就阻止提交
+    if (result.errorCount) {
+      process.exitCode = 1
+    }
+  }
+})().catch((error) => {
+  process.exitCode = 1
+  console.error(error)
+})
+```
